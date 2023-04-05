@@ -78,8 +78,14 @@ while running:
         for enemy in enemies:
             if proj['pos'].distance_to(enemy['pos']) < 30:
 
+                # increase score and remove enemy and projectile
+                score += 10
                 projectiles.remove(proj)
                 enemies.remove(enemy)
+
+    # draw score counter
+    score_text = score_font.render(f"Score: {score}", True, (255, 255, 255))
+    screen.blit(score_text, (screen.get_width() - score_text.get_width() - 20, 20))
 
     # update and draw the enemies
     for enemy in enemies:
@@ -110,7 +116,7 @@ while running:
 
     # update and draw lives
     for i in range(lives):
-        screen.blit(heart_img, (1100 + i * 60, screen.get_height() - 700))
+        screen.blit(heart_img, (1100 + i * 60, screen.get_height() - 100))
 
 
 
