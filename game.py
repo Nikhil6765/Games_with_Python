@@ -1,4 +1,3 @@
-# Example file showing a circle moving on screen
 import pygame
 
 # pygame setup
@@ -9,6 +8,8 @@ running = True
 dt = 0
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+projectiles = []
+enemies = []
 
 while running:
     # poll for events
@@ -16,11 +17,33 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                # create a new projectile
+                proj_pos = player_pos + pygame.Vector2(0, -50)
+                proj_vel = pygame.Vector2(0, -800)
+                projectiles.append({'pos': proj_pos, 'vel': proj_vel})
+            elif event.key == pygame.K_e:
+                # create a new enemy
+                enemy_pos = pygame.Vector2(screen.get_width() / 2, -50)
+                enemy_vel = pygame.Vector2(0, 200)
+                enemies.append({'pos': enemy_pos, 'vel': enemy_vel})
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("purple")
 
+    # draw the player
     pygame.draw.circle(screen, "red", player_pos, 40)
+
+    # update and draw the projectiles
+    for proj in projectiles:
+        proj['pos'] += proj['vel'] * dt
+        pygame.draw.circle(screen, "white", proj['pos'], 10)
+
+    # update and draw the enemies
+    for enemy in enemies:
+        enemy['pos'] += enemy['vel'] * dt
+        pygame.draw.circle(screen, "green", enemy['pos'], 30)
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
