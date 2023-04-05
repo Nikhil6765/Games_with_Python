@@ -6,6 +6,8 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 dt = 0
+lives = 3
+
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 projectiles = []
@@ -44,6 +46,7 @@ while running:
                 projectiles = []
                 enemies = []
                 game_over = False
+                lives = 3  # reset number of lives
 
 
     # fill the screen with a color to wipe away anything from last frame
