@@ -26,6 +26,16 @@ start_button_text_rect = start_button_text.get_rect()
 start_button_text_rect.center = start_button_rect.center
 
 
+# define heart icon and text
+heart_img = pygame.image.load("heart.gif").convert_alpha()
+heart_img = pygame.transform.scale(heart_img, (40, 40))
+
+# define score font
+score_font = pygame.font.SysFont(None, 50)
+# define score variable
+score = 0
+
+
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -78,8 +88,16 @@ while running:
         
         # check for collision with player
         if enemy['pos'].distance_to(player_pos) < 70:
-            game_over = True
+            lives-=1
+            if lives==0:
+                game_over = True
+            
+            enemies.remove(enemy)
     
+    # draw lives counter
+    lives_text = font.render(f"Lives: {lives}", True, (255, 255, 255))
+    screen.blit(lives_text, (20, 20))
+
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
         player_pos.y -= 300 * dt
@@ -90,12 +108,23 @@ while running:
     if keys[pygame.K_d]:
         player_pos.x += 300 * dt
 
+    # update and draw lives
+    for i in range(lives):
+        screen.blit(heart_img, (1100 + i * 60, screen.get_height() - 700))
+
+
+
     # spawn a new enemy every 3 seconds
     if pygame.time.get_ticks() % 3000 < dt * 1000 and not game_over:
         for i in range(3):
             enemy_pos = pygame.Vector2((i+1)*screen.get_width()/6, -50)
             enemy_vel = pygame.Vector2(0, 200)
             enemies.append({'pos': enemy_pos, 'vel': enemy_vel})
+
+
+    # check for game over
+    if lives <= 0:
+        game_over = True
 
     # draw game over text if game over
     if game_over:
