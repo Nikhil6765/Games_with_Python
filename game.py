@@ -89,10 +89,10 @@ while running:
 
     # spawn a new enemy every 3 seconds
     if pygame.time.get_ticks() % 3000 < dt * 1000 and not game_over:
-        enemy_pos = pygame.Vector2(screen.get_width() / 2, -50)
-        enemy_vel = pygame.Vector2(0, 200)
-        enemies.append({'pos': enemy_pos, 'vel': enemy_vel})
-
+        for i in range(3):
+            enemy_pos = pygame.Vector2((i+1)*screen.get_width()/6, -50)
+            enemy_vel = pygame.Vector2(0, 200)
+            enemies.append({'pos': enemy_pos, 'vel': enemy_vel})
 
     # draw game over text if game over
     if game_over:
