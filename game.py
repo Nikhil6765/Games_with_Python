@@ -13,6 +13,17 @@ enemies = []
 
 game_over = False  # flag to check if game is over
 
+# define font
+font = pygame.font.SysFont(None, 50)
+
+# define "Start Game" button
+start_button_rect = pygame.Rect(100, 100, 200, 50)
+start_button_color = (255, 255, 255)
+start_button_text = font.render("Start Game", True, (0, 0, 0))
+start_button_text_rect = start_button_text.get_rect()
+start_button_text_rect.center = start_button_rect.center
+
+
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -25,12 +36,25 @@ while running:
                 proj_pos = player_pos + pygame.Vector2(0, -50)
                 proj_vel = pygame.Vector2(0, -800)
                 projectiles.append({'pos': proj_pos, 'vel': proj_vel})
+        
+        elif event.type==pygame.MOUSEBUTTONDOWN:
+            if start_button_rect.collidepoint(event.pos):
+                # reset game
+                player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+                projectiles = []
+                enemies = []
+                game_over = False
+
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("purple")
 
     # draw the player
     pygame.draw.circle(screen, "red", player_pos, 40)
+
+    # draw "Start Game" button
+    pygame.draw.rect(screen, start_button_color, start_button_rect)
+    screen.blit(start_button_text, start_button_text_rect)
 
     # update and draw the projectiles
     for proj in projectiles:
@@ -64,7 +88,7 @@ while running:
         player_pos.x += 300 * dt
 
     # spawn a new enemy every 3 seconds
-    if pygame.time.get_ticks() % 3000 < dt * 1000:
+    if pygame.time.get_ticks() % 3000 < dt * 1000 and not game_over:
         enemy_pos = pygame.Vector2(screen.get_width() / 2, -50)
         enemy_vel = pygame.Vector2(0, 200)
         enemies.append({'pos': enemy_pos, 'vel': enemy_vel})
