@@ -11,6 +11,8 @@ player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 projectiles = []
 enemies = []
 
+game_over = False  # flag to check if game is over
+
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -46,7 +48,11 @@ while running:
     for enemy in enemies:
         enemy['pos'] += enemy['vel'] * dt
         pygame.draw.circle(screen, "green", enemy['pos'], 30)
-
+        
+        # check for collision with player
+        if enemy['pos'].distance_to(player_pos) < 70:
+            game_over = True
+    
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
         player_pos.y -= 300 * dt
@@ -63,6 +69,14 @@ while running:
         enemy_vel = pygame.Vector2(0, 200)
         enemies.append({'pos': enemy_pos, 'vel': enemy_vel})
 
+
+    # draw game over text if game over
+    if game_over:
+        font = pygame.font.SysFont(None, 100)
+        text = font.render("GAME OVER", True, (255, 255, 255))
+        screen.blit(text, (screen.get_width() / 2 - text.get_width() / 2, screen.get_height() / 2 - text.get_height() / 2))
+
+    
     # flip() the display to put your work on screen
     pygame.display.flip()
 
