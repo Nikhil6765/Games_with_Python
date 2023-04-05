@@ -23,11 +23,6 @@ while running:
                 proj_pos = player_pos + pygame.Vector2(0, -50)
                 proj_vel = pygame.Vector2(0, -800)
                 projectiles.append({'pos': proj_pos, 'vel': proj_vel})
-            elif event.key == pygame.K_e:
-                # create a new enemy
-                enemy_pos = pygame.Vector2(screen.get_width() / 2, -50)
-                enemy_vel = pygame.Vector2(0, 200)
-                enemies.append({'pos': enemy_pos, 'vel': enemy_vel})
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("purple")
@@ -39,6 +34,13 @@ while running:
     for proj in projectiles:
         proj['pos'] += proj['vel'] * dt
         pygame.draw.circle(screen, "white", proj['pos'], 10)
+
+        # check for collisions with enemies
+        for enemy in enemies:
+            if proj['pos'].distance_to(enemy['pos']) < 30:
+
+                projectiles.remove(proj)
+                enemies.remove(enemy)
 
     # update and draw the enemies
     for enemy in enemies:
@@ -54,6 +56,12 @@ while running:
         player_pos.x -= 300 * dt
     if keys[pygame.K_d]:
         player_pos.x += 300 * dt
+
+    # spawn a new enemy every 3 seconds
+    if pygame.time.get_ticks() % 3000 < dt * 1000:
+        enemy_pos = pygame.Vector2(screen.get_width() / 2, -50)
+        enemy_vel = pygame.Vector2(0, 200)
+        enemies.append({'pos': enemy_pos, 'vel': enemy_vel})
 
     # flip() the display to put your work on screen
     pygame.display.flip()
