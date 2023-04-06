@@ -105,13 +105,13 @@ while running:
     screen.blit(lives_text, (20, 20))
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
+    if keys[pygame.K_UP]:
         player_pos.y -= 300 * dt
-    if keys[pygame.K_s]:
+    if keys[pygame.K_DOWN]:
         player_pos.y += 300 * dt
-    if keys[pygame.K_a]:
+    if keys[pygame.K_LEFT]:
         player_pos.x -= 300 * dt
-    if keys[pygame.K_d]:
+    if keys[pygame.K_RIGHT]:
         player_pos.x += 300 * dt
 
     # update and draw lives
