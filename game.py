@@ -124,24 +124,10 @@ while running:
 
     # spawn a new enemy every 3 seconds
     if pygame.time.get_ticks() % 3000 < dt * 1000 and not game_over:
-        enemy_types = [
-            {'color': "green", 'radius': 30, 'speed': 200},
-            {'color': "blue", 'radius': 20, 'speed': 300},
-            {'color': "yellow", 'radius': 40, 'speed': 150}
-        ]
-
-        spawn_positions = [
-            pygame.Vector2(random.randint(0, screen.get_width()), -50),  # Top
-            pygame.Vector2(random.randint(0, screen.get_width()), screen.get_height() + 50),  # Bottom
-            pygame.Vector2(-50, random.randint(0, screen.get_height())),  # Left
-            pygame.Vector2(screen.get_width() + 50, random.randint(0, screen.get_height()))  # Right
-        ]
-
         for i in range(3):
-            spawn_position = random.choice(spawn_positions)
-            enemy_type = random.choice(enemy_types)
-            enemy_vel = pygame.Vector2(player_pos.x - spawn_position.x, player_pos.y - spawn_position.y).normalize() * enemy_type['speed']
-            enemies.append({'pos': spawn_position, 'vel': enemy_vel, 'color': enemy_type['color'], 'radius': enemy_type['radius']})
+            enemy_pos = pygame.Vector2((i+1)*screen.get_width()/6, -50)
+            enemy_vel = pygame.Vector2(0, 200)
+            enemies.append({'pos': enemy_pos, 'vel': enemy_vel})
 
 
     # check for game over
